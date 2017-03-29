@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Blog</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row" id="blogs">
+		<h1>Write a post</h1>
+		<form>
+		  <div class="form-group">
+		    <label for="title">Title</label>
+		    <input class="form-control" id="title" placeholder="Title">
+		  </div>
+		  <div class="form-group">
+		    <label for="post">Text</label>
+			<textarea class="form-control" id="post" rows="3"></textarea>
+		  </div>
+		  <button type="submit" class="btn btn-default" id="submit">Submit</button>
+		</form>
+		<br>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var userData = {};
+
+			$.get('/api/user')
+			.then(function(data){
+				console.log(data);
+				userData = data;
+
+				var postData = {};
+
+				$.post('/api/findAll', userData)
+				.then(function(postData){
+					console.log(postData);
+					postData = postData;
+
+					for(var i = 0; i < postData.length; i++){
+						var divPanel = $("<div>", {"class": "panel panel-default"});
+						var divHeading = $("<div>", {"class": "panel-heading"});
+						var divBody = $("<div>", {"class": "panel-body"});
+
+						var h3 = $("<h3>", {"class": "panel-title"});
+						h3.text(postData[i].title);
+						divHeading.append(h3);
+
+						divBody.text(postData[i].content);
+
+						divPanel.append(divHeading);
+						divPanel.append(divBody);
+
+						$("#blogs").append(divPanel);
+
+					};
+
+				})
+				.fail(function(err){
+					alert (err);
+				});
+
+			})
+			.fail(function(err){
+				alert (err);
+			});
+
+			$("#submit").on('click', function(event){
+				event.preventDefault();
+
+				var title = $("#title").val();
+				var post = $("#post").val();
+				var userID = userData.id;
+
+				var postData = {
+					title: title,
+					post: post,
+					id: userID
+				}
+
+				$.post('/api/post', postData)
+				.then(function(){
+					window.location = '/signin';
+				})
+				.fail(function(err){
+					alert (err);
+				});
+
+			});
+
+		});	
+	</script>
+</body>
+</html>

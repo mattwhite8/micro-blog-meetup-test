@@ -20,10 +20,10 @@ module.exports = function(app){
 		});
 	});
 
-	app.post('/api/test', function(req, res){
-		db.Adventure.create({
-			test: req.body.test,
-			test2: req.body.test2,
+	app.post('/api/post', function(req, res){
+		db.Post.create({
+			title: req.body.title,
+			content: req.body.post,
 			UserId: req.body.id
 		}).then(function(dbAdventure){
 			res.send('created');
@@ -47,6 +47,14 @@ module.exports = function(app){
 					res.send(500);
 				}
 			});
+		});
+	});
+
+	app.post('/api/findAll', function(req, res){
+		db.Post.findAll({
+			where: {UserId: req.body.id}
+		}).then(function(dbPosts){
+			res.send(dbPosts);
 		});
 	});
 

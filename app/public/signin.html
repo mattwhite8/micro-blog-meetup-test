@@ -10,7 +10,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="jumbotron">
-				<h1>Sign Up</h1>
+				<h1>Sign In</h1>
 				<form>
 				  <div class="form-group">
 				    <label for="username">User Name</label>
@@ -37,11 +37,11 @@
 				var data = {
 					username: username, 
 					password: password
-				};
+				}
 
-				$.post('/api/register', data)
+				$.post('/api/login', data)
 				.then(function(){
-					window.location = '/';
+					window.location = '/signin';
 				})
 				.fail(function(err){
 		            alert (JSON.stringify(err.responseText));

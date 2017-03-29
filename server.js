@@ -8,6 +8,7 @@ var bodyParser = require("body-parser");
 var db = require("./models");
 var bcrypt = require("bcrypt");
 var session = require("client-sessions");
+var path = require("path");
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -28,7 +29,7 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 //Static middleware will serve our css file
-app.use(express.static('./app/public'));
+app.use(express.static(path.join(__dirname, 'app')));
 
 app.use(session({
   cookieName: 'session',
