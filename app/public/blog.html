@@ -9,7 +9,8 @@
 <body>
 	<div class="container">
 		<div class="row" id="blogs">
-		<h1>Write a post</h1>
+			<h1>Write a post</h1>
+			<button><a id="logout" href="/logout">Log Out</a></button>
 		<form>
 		  <div class="form-group">
 		    <label for="title">Title</label>
@@ -68,6 +69,18 @@
 			.fail(function(err){
 				alert (err);
 			});
+
+			$("#logout").on('click', function(event){
+				event.preventDefault();
+
+				$.get('/logout')
+				.then(function(){
+					window.location = '/';
+				})
+				.fail(function(err){
+					alert (err);
+				});
+			})
 
 			$("#submit").on('click', function(event){
 				event.preventDefault();

@@ -16,13 +16,17 @@ module.exports = function(app){
 	});
 
 	app.get('/signin', function(req, res){
+	  if (req.session && req.session.user) { // Check if session exists
 		res.sendFile(path.join(__dirname,'/../public/', "blog.html"));
+	  }else {
+	  	res.sendFile(path.join(__dirname,'/../public/', "index.html"));
+	  }
 	});
 
 	app.get('/logout', function(req, res) {
 		//this will clear out our session data
 	 	req.session.reset();
-	 	res.redirect('/');
+	 	res.send(200);
 	});
 
 };
